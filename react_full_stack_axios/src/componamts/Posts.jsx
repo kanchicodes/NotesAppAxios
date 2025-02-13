@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPost } from "../api/PostApi";
+import { deletePost, getPost } from "../api/PostApi";
 import "../App.css";
 
 export const Posts = () => {
@@ -15,6 +15,15 @@ export const Posts = () => {
         getPostData();
     }, []);
 
+    // useEffect(() => {
+    //     deletePost(`${id}`);
+    // });
+
+    const handleDeletePost = async (id) => {
+       const res = await deletePost(id);
+       console.log(res);
+    }
+
     return (
         <section className="section-post">
             <ol>
@@ -26,7 +35,7 @@ export const Posts = () => {
                      <p> Title: {title} </p>
                      <p> Body: {body} </p>
                      <button>Edit</button>
-                     <button className="btn-delete">Delete</button>
+                     <button className="btn-delete" onClick={()=>handleDeletePost(id)}>Delete</button>
                     </li>
                 })}
 
