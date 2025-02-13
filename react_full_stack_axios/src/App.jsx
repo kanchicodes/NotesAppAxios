@@ -3,12 +3,12 @@ import { Posts } from "./componamts/Posts";
 
 const App = () => {
 
-  return(
- 
-  <section className="main-section">
- <Posts/>
-  </section>
-);
+  return (
+
+    <section className="main-section">
+      <Posts />
+    </section>
+  );
 };
 
 
