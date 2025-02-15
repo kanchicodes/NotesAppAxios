@@ -1,11 +1,10 @@
 import Axios from 'axios'
-import { Posts } from '../componamts/Posts';
+// import { Posts } from '../componamts/Posts';
 
 
 const api = Axios.create({
     baseURL: "https://jsonplaceholder.typicode.com",
 })
-
 
 
 // get methode
@@ -25,3 +24,8 @@ export const PostData = (post) => {
     return api.post("/posts", post)
 };
 
+
+/// update(put) methode
+export const updateData = (id,post) => {
+    return api.put(`/posts/${id}`, post)
+};

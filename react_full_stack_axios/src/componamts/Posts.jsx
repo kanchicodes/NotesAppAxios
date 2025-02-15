@@ -6,7 +6,7 @@ import { Form } from "./Form";
 export const Posts = () => {
 
     const [data, setData] = useState([]);
-const [updateDataApi, setUpdateDataApi] = useState({});
+    const [updateDataApi, setUpdateDataApi] = useState({});
 
 
     const getPostData = async () => {
@@ -27,29 +27,30 @@ const [updateDataApi, setUpdateDataApi] = useState({});
                     return curPost.id !== id;
                 });
                 setData(newUpdatedPosts);
-            } else{
-                console.log("Failed to delete the post:",res.status);
-            }}
-            catch (error) {
-                console.log(error);
+            } else {
+                console.log("Failed to delete the post:", res.status);
             }
+        }
+        catch (error) {
+            console.log(error);
+        }
     }
-        // handle update post
+    // handle update post
 
-        const handleUpdatePost = (curElem) => setUpdateDataApi(curElem);
+    const handleUpdatePost = (curElem) => setUpdateDataApi(curElem);
 
 
-        
 
-        return (
-            <>
+
+    return (
+        <>
             <section className="section-form">
-                <Form 
-                data={data} 
-                setData={setData} 
-                updateDataApi={updateDataApi}
-                 setUpdateDataApi={setUpdateDataApi}
-               />
+                <Form
+                    data={data}
+                    setData={setData}
+                    updateDataApi={updateDataApi}
+                    setUpdateDataApi={setUpdateDataApi}
+                />
             </section>
             <section className="section-post">
                 <ol>
@@ -67,6 +68,6 @@ const [updateDataApi, setUpdateDataApi] = useState({});
 
                 </ol>
             </section>
-            </>
-        )
-    }
+        </>
+    )
+}

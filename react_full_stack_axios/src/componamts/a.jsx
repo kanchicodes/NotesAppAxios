@@ -1,8 +1,5 @@
-import { useState } from "react";
-import { PostData } from "../api/PostApi";
-import { useEffect } from "react";
-import { updateData } from "../api/PostApi";
-
+import { useState, useEffect } from "react";
+import { PostData, updateData } from "../api/PostApi";
 
 export const Form = ({ data, setData, updateDataApi, setUpdateDataApi }) => {
     const [addData, setAddData] = useState({
@@ -12,21 +9,18 @@ export const Form = ({ data, setData, updateDataApi, setUpdateDataApi }) => {
 
     let isEmpty = Object.keys(updateDataApi).length === 0;
 
-
     // get update data and add into input field
-
     useEffect(() => {
-        updateDataApi &&
+        if (updateDataApi) {
             setAddData({
                 title: updateDataApi.title || "",
                 body: updateDataApi.body || "",
-            })
-
+            });
+        }
     }, [updateDataApi]);
 
     const handleInputChange = (e) => {
         const name = e.target.name;
-
         const value = e.target.value;
 
         setAddData((prev) => {
@@ -35,21 +29,22 @@ export const Form = ({ data, setData, updateDataApi, setUpdateDataApi }) => {
                 [name]: value,
             };
         });
-
     };
 
     const addPostData = async () => {
-        const res = await PostData(addData);
-        console.log("res", res);
-        if ((res.status === 201)) {
-            setData([...data, res.data]);
-            setAddData({ title: "", body: "" });
-
+        try {
+            const res = await PostData(addData);
+            console.log("res", res);
+            if (res.status === 201) {
+                setData([...data, res.data]);
+                setAddData({ title: "", body: "" });
+            }
+        } catch (error) {
+            console.error("Error adding post:", error);
         }
     };
 
     // update post data
-
     const updatePostData = async () => {
         try {
             const res = await updateData(updateDataApi.id, addData);
@@ -58,40 +53,27 @@ export const Form = ({ data, setData, updateDataApi, setUpdateDataApi }) => {
                 setData((prev) => {
                     return prev.map((curElem) => {
                         return curElem.id === updateDataApi.id ? res.data : curElem;
-                    })
+                    });
                 });
                 setAddData({ title: "", body: "" });
                 setUpdateDataApi({});
             }
-
-        } catch (error ) {
-            console.log("Error updating post:", error);
+        } catch (error) {
+            console.error("Error updating post:", error);
         }
-
     };
 
-
-    // form sumbition
-
-    // const handleFormSubmit = (e) => {
-    //     e.preventDefault();
-    //     const action = e.nativeEvent.submitter.value;
-    //     if (action === "Add") {
-    //         addPostData();
-    //     } else if (action === "Edit") {
-    //         updatePostData();
-    //     }
-    // };
-
+    // form submission
     const handleFormSubmit = (e) => {
         e.preventDefault();
         const action = e.nativeEvent.submitter.value;
         if (action === "Add") {
-          addPostData();
-        } else{ (action === "Edit") }{
-          updatePostData();
+            addPostData();
+        } else if (action === "Edit") {
+            updatePostData();
         }
-      };
+    };
+
     return (
         <form onSubmit={handleFormSubmit}>
             <div>
@@ -123,7 +105,6 @@ export const Form = ({ data, setData, updateDataApi, setUpdateDataApi }) => {
             <button type="submit" value={isEmpty ? "Add" : "Edit"}>
                 {isEmpty ? "Add" : "Edit"}
             </button>
-
         </form>
-    )
-}
+    );
+};
